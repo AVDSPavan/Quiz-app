@@ -16,13 +16,14 @@ exports.signup = (req, res) => {
 	user.save((err, user) => {
 		if (err) {
 			return res.status(400).json({
-				err: err,
+				error: err
 			});
 		}
-		res.json({
+		return res.json({
 			name: user.name,
 			email: user.email,
 			id: user._id,
+			role: user.role
 		});
 	});
 };

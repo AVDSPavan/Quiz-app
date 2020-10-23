@@ -13,16 +13,16 @@ exports.getquestionById = (req, res, next, id) => {
 };
 
 exports.createquestion = (req, res) => {
-
-  console.log("Came");
+  // console.log("Question Came");
+  // console.log(req.body)
   const question = new Question(req.body);
   question.save((err, question) => {
     if (err) {
       return res.status(400).json({
-        error: "NOT able to save question in DB"
+        error: err
       });
     }
-    res.json({ question });
+    res.json({ id : question._id});
   });
 };
 

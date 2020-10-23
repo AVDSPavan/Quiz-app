@@ -7,44 +7,47 @@ import AdminRoute from "./auth/helper/AdminRoutes";
 import PrivateRoute from "./auth/helper/PrivateRoutes";
 import UserDashBoard from "./user/UserDashBoard";
 import AdminDashBoard from "./user/AdminDashBoard";
-import AddCategory from "./admin/AddCategory";
-import ManageCategories from "./admin/ManageCategories";
-import AddProduct from "./admin/AddProduct";
-import ManageProducts from "./admin/ManageProducts";
-import UpdateProduct from "./admin/UpdateProduct";
-import Cart from "./core/Cart";
+import AddCourse from "./admin/AddCourse";
+import ManageCourses from "./admin/ManageCourses";
+import AddQuiz from "./admin/AddQuiz";
+import ManageQuizs from "./admin/ManageQuiz";
+import AttemptQuiz from "./user/AttemptQuiz";
+// import UpdateQuiz from "./admin/UpdateQuiz";
 
 const Routes = () => {
-  return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/signup" exact component={Signup} />
-        <Route path="/signin" exact component={Signin} />
-        <Route path="/cart" exact component={Cart} />
-        <PrivateRoute path="/user/dashboard" exact component={UserDashBoard} />
-        <AdminRoute path="/admin/dashboard" exact component={AdminDashBoard} />
-        <AdminRoute
-          path="/admin/create/category"
+	return (
+		<BrowserRouter>
+			<Switch>
+				<Route path="/" exact component={Home} />
+				<Route path="/signup" exact component={Signup} />
+				<Route path="/signin" exact component={Signin} />
+				{/* <Route path="/cart" exact component={Cart} /> */}
+				<PrivateRoute path="/user/dashboard" exact component={UserDashBoard} />
+				<AdminRoute path="/admin/dashboard" exact component={AdminDashBoard} />
+				<AdminRoute path="/admin/create/course" exact component={AddCourse} />
+				<AdminRoute
+          path="/admin/course"
           exact
-          component={AddCategory}
+          component={ManageCourses}
         />
-        <AdminRoute
-          path="/admin/categories"
-          exact
-          component={ManageCategories}
-        />
-        <AdminRoute path="/admin/create/product" exact component={AddProduct} />
+        <AdminRoute path="/admin/create/quiz" exact component={AddQuiz} />
 
-        <AdminRoute path="/admin/products/" exact component={ManageProducts} />
-        <AdminRoute
-          path="/admin/product/update/:productId"
+        <AdminRoute path="/admin/quizs" exact component={ManageQuizs} />
+        {/* <AdminRoute
+          path="/admin/course/update/:courseId"
           exact
-          component={UpdateProduct}
-        />
-      </Switch>
-    </BrowserRouter>
-  );
+          component={UpdateCourse}
+        /> */}
+        {/* <AdminRoute
+          path="/admin/quiz/update/:quizId"
+          exact
+          component={UpdateQuiz}
+        /> */}
+				{/* <Route path="/course/:courseId" exact component={} /> */}
+        <PrivateRoute path="/quiz/attempt/:quizId" exact component={AttemptQuiz} />
+			</Switch>
+		</BrowserRouter>
+	);
 };
 
 export default Routes;

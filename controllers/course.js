@@ -26,7 +26,7 @@ exports.createcourse = (req, res) => {
   });
 };
 
-exports.getcourse = (req, res) => {
+exports.getCourse = (req, res) => {
   return res.json(req.course);
 };
 
@@ -34,26 +34,28 @@ exports.getAllcourse = (req, res) => {
   Course.find().exec((err, courses) => {
     if (err) {
       return res.status(400).json({
-        error: "NO categories found"
+        error: "NO courses found"
       });
     }
     return res.json(courses);
   });
 };
 
-// exports.updatecourse = (req, res) => {
-//   const course = req.course;
-//   course.name = req.body.name;
-
-//   course.save((err, updatedcourse) => {
-//     if (err) {
-//       return res.status(400).json({
-//         error: "Failed to update course"
-//       });
-//     }
-//     res.json(updatedcourse);
-//   });
-// };
+exports.updatecourse = (req, res) => {
+  const course = req.course;
+  course.name = req.body.name;
+  course.count = req.body.count;
+  console.log(req.body.count);
+  console.log("Updating: "+ course.count)
+  course.save((err, updatedcourse) => {
+    if (err) {
+      return res.status(400).json({
+        error: "Failed to update course"
+      });
+    }
+    res.json(updatedcourse);
+  });
+};
 
 exports.removecourse = (req, res) => {
   const course = req.course;

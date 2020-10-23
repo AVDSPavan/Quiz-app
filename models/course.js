@@ -9,6 +9,10 @@ const courseSchema = new mongoose.Schema(
 			maxlength: 32,
 			unique: true,
 		},
+		count:{
+			type:Number,
+			default:0
+		}
 	},
 	{ timestamps: true }
 );

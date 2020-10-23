@@ -4,9 +4,9 @@ const router = express.Router();
 const {
   getcourseById,
   createcourse,
-  getcourse,
+  getCourse,
   getAllcourse,
-  //updatecourse,
+  updatecourse,
   removecourse
 } = require("../controllers/course");
 const { isSignedIn, isAdmin, isAuthenticated } = require("../controllers/auth");
@@ -28,25 +28,25 @@ router.post(
 );
 
 //read
-router.get("/course/:courseId", getcourse);
+router.get("/course/:courseId", getCourse);
 router.get("/courses", getAllcourse);
 
 //update
-// router.put(
-//   "/course/:courseId/:userId",
-//   isSignedIn,
-//   isAuthenticated,
-//   isAdmin,
-//   updatecourse
-// );
+router.put(
+  "/course/:courseId/:userId",
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
+  updatecourse
+);
 
 //delete
 
 router.delete(
-  "/course/:courseId/",
-  // isSignedIn,
-  // isAuthenticated,
-  // isAdmin,
+  "/course/:courseId/:userId",
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
   removecourse
 );
 

@@ -28,9 +28,8 @@ const quizSchema = new mongoose.Schema(
 		// 	default: 0,
 		// },
 		course: {
-			type: ObjectId,
-			ref: "Category",
-			required: true,
+			type: String,
+			required: true
 		},
 	},
 	{ timestamps: true }

@@ -40,7 +40,7 @@ const questionSchema = new mongoose.Schema(
 			maxlength: 2000,
 		},
 		marks:{
-			type:Number,
+			type:String,
 			default:1
 		}
 	},

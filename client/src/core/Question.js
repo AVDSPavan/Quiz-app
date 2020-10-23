@@ -1,18 +1,33 @@
-import React, { useState} from "react";
-
-const App=({
-  question= "What us the curay cadjkvvv habcjd sskjbajscc achbcjab ckcbajc ckjbcaa cacjkbasc asckjjahc sgjgjg fhff gvnfjdihu ssjsjdbd uhvskln ondv dvv kjgasknnccbuiasc cjakbcajhck kahh ?"
-  ,option1= "he is the latency thing"
-  ,option2= "Choose the correct option"
-  ,option3 = "Given your thing as you will do "
-  ,option4 = "dsfdgfhjkhl ygweuf cyguwe cgeqee uichqiccnq oicq"
-  ,answer = "vcegien uihfu gwiuuqgqw wdqqudoqiq"
-  ,marks=5
-  ,serialNo=1
-})=> {  
-  
+import React, { useState,useEffect} from "react";
+import {getQues} from "../admin/helper/adminapicall"
+const Question=({quesId})=> {  
+  const [quest,setQuest] = useState({
+      question:"",
+      option1:"",
+      option2:"",
+      option3:"",
+      option4:"",
+      answer:"",
+      marks:"",
+  })
   const [ans,setAns] = useState("");
-
+  const preload = () => {
+    getQues(quesId).then((data) => {
+            setQuest({...quesId,
+                question:data.question,
+                option1:data.option1,
+                option2:data.option2,
+                option3:data.option3,
+                option4:data.option4,
+                answer:data.answer,
+                marks:data.marks
+            });
+    });
+};
+const {question,option1,option2,option3,option4,answer,marks} = quest;
+useEffect(() => {
+    preload();
+}, []);
 
   const handleChangeq = () => (event) => {
   setAns(event.target.value);
@@ -25,7 +40,7 @@ const App=({
               <div className="container">
               <div className="row" >
                 <div className="col-12 text-primary" style={{textAlign:"",marginBottom:"10px"}}>
-                    {serialNo+". "+ question}
+                    {question}
                 </div>
               </div>
                 <div className="row" style={{color:"white"}}>
@@ -63,4 +78,4 @@ const App=({
     );
 }
 
-export default App;
+export default Question;

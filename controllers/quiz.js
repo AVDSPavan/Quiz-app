@@ -14,7 +14,8 @@ exports.getquizById = (req, res, next, id) => {
 
 exports.createquiz = (req, res) => {
 
-  console.log("Came");
+// console.log("Quiz Came");
+// console.log(req.body);
   const quiz = new Quiz(req.body);
   quiz.save((err, quiz) => {
     if (err) {
@@ -65,7 +66,7 @@ exports.removequiz = (req, res) => {
       });
     }
     res.json({
-      message: "Successfull deleted"
+      message: "Successfully deleted"
     });
   });
 };

@@ -43,10 +43,10 @@ router.get("/quizs", getAllquiz);
 //delete
 
 router.delete(
-  "/quiz/:quizId/",
-  // isSignedIn,
-  // isAuthenticated,
-  // isAdmin,
+  "/quiz/:quizId/:userId",
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
   removequiz
 );
 
