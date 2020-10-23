@@ -11,8 +11,8 @@ export default function Home() {
 	const [quizs, setQuizs] = useState([]);
 	const [error, setError] = useState(false);
 
-	const loadAllQuizs = () => {
-	 	getQuizs().then((data) => {
+	const loadAllQuizs = async() => {
+	 	await getQuizs().then((data) => {
 	 		if (data.error) {
 	 			setError(data.error);
 	 			console.log(data.error);
