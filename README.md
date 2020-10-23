@@ -24,3 +24,9 @@ Private routes used for different roles. Authentication used JWT - 'Json Web Tok
 Password is encrypted using crypto and salt using a private key and stored the encrypted password in MongoDb Atlas.
 
 Not able to implement fully functinal quiz application due to time constraints.
+
+To use this project, one should create '.env' file and insert 
+
+DATABASE_ONLINE=database url
+
+SECRET="some string for password encryption"
