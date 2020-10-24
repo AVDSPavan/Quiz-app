@@ -28,7 +28,7 @@ export const getCourses = async () => {
 
 export const getCourse = courseId => {
   return fetch(`${API}/course/${courseId}`, {
-    method: "GET"
+    method: "GET",
   })
     .then(res => {
       return res.json();
@@ -90,7 +90,10 @@ export const createaQuiz = (userId,token,body) =>{
 
 export const getQuiz = (quizId) => {
   return fetch(`${API}/quiz/${quizId}`, {
-    method: "GET"
+    method: "GET",
+    headers:{
+      Accept: "application/json"
+    }
   })
     .then(res => {
       return res.json();
@@ -101,7 +104,10 @@ export const getQuiz = (quizId) => {
 
 export const getQues = quesId => {
   return fetch(`${API}/question/${quesId}`, {
-    method: "GET"
+    method: "GET",
+    headers:{
+      Accept: "application/json"
+    }
   })
     .then(res => {
       return res.json();

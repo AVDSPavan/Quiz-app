@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Base from "../core/Base";
 import { Link } from "react-router-dom";
-//import { isAutheticated } from "../auth/helper";
+import { isAutheticated} from "../auth/helper";
 import { getCourses } from "./helper/adminapicall";
 import { API } from "../backend";
 const ManageCourses = () => {
 	const [courses, setCourses] = useState([]);
 	const [reload, setReload] = useState(false);
-	//const { user, token } = isAutheticated();
+	const { user, token } = isAutheticated();
 
 	const preload = () => {
 		getCourses().then((data) => {
@@ -23,6 +23,7 @@ const ManageCourses = () => {
 		return fetch(`${API}/course/${courseId}/${userId}`, {
 			method: "DELETE",
 			headers:{
+				Accept: "application/json",
 				Authorization: `Bearer ${token}`
 			}
 		})
@@ -59,7 +60,7 @@ const ManageCourses = () => {
 										<div className="col-6">
 											<button
 												onClick={() => {
-													deleteCourse(course._id);
+													deleteCourse(course._id,user._id,token);
 												}}
 												className="btn btn-danger">
 												Delete

@@ -1,6 +1,6 @@
 import React, { useState,useEffect} from "react";
 import {getQues} from "../admin/helper/adminapicall"
-const Question=({quesId})=> {  
+const Question=({quesId,sno})=> {  
   const [quest,setQuest] = useState({
       question:"",
       option1:"",
@@ -37,10 +37,10 @@ useEffect(() => {
     <div className="container bg-green">
       <div className="container">
             <div className="container">
-              <div className="container">
+              <div className="container">\<br/>
               <div className="row" >
                 <div className="col-12 text-primary" style={{textAlign:"",marginBottom:"10px"}}>
-                    {question}
+                    {sno+1 +".  "+question}
                 </div>
               </div>
                 <div className="row" style={{color:"white"}}>

@@ -24,7 +24,7 @@ useEffect(() => {
     <div className="container bg-green">
               <div className="container">
                   {ques.map((q,key)=>(
-                      <Question quesId={q}/>
+                      <Question quesId={q} sno={key}/>
                   ))
 
                   }

@@ -13,8 +13,6 @@ exports.getcourseById = (req, res, next, id) => {
 };
 
 exports.createcourse = (req, res) => {
-
-    console.log("Came");
   const course = new Course(req.body);
   course.save((err, course) => {
     if (err) {
@@ -45,8 +43,7 @@ exports.updatecourse = (req, res) => {
   const course = req.course;
   course.name = req.body.name;
   course.count = req.body.count;
-  console.log(req.body.count);
-  console.log("Updating: "+ course.count)
+
   course.save((err, updatedcourse) => {
     if (err) {
       return res.status(400).json({

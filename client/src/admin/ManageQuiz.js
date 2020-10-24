@@ -13,6 +13,7 @@ const ManageQuizs = () => {
 		return fetch(`${API}/quiz/${quizId}/${userId}`, {
             method: "DELETE",
             headers:{
+				Accept: "application/json",
                 Authorization: `Bearer ${token}`
             }
 		})

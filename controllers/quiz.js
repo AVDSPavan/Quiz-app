@@ -28,6 +28,7 @@ exports.createquiz = (req, res) => {
 };
 
 exports.getquiz = (req, res) => {
+  console.log(req.quiz.quest)
   return res.json(req.quiz);
 };
 
