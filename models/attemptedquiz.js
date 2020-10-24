@@ -1,27 +1,26 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema;
 
 const attemptedQuiz = new mongoose.Schema({
 	student: {
-		type: ObjectId,
-		ref: "User",
+		type: String,
+		required:true
 	},
 	quiz: {
-		type: ObjectId,
-		ref: "Quiz",
+		type: String,
+		required:true
 	},
-	correct: {
-		type: Number,
-		default: 0,
-	},
-	wrong: {
-		type: Number,
-		default: 0,
+	course:{
+		type:String,
+		required:true
 	},
 	score: {
 		type: Number,
 		default: 0,
 	},
+	totalscore:{
+		type: Number,
+		default:0
+	}
 });
 
 module.exports = mongoose.model("AttemptedQuizes", attemptedQuiz);

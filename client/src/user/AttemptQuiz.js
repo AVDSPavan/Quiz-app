@@ -1,37 +1,202 @@
-import React, { useState,useEffect} from "react";
-import {getQuiz} from "../admin/helper/adminapicall"
+import React, { useState, useEffect } from "react";
+import { getQuiz } from "../admin/helper/adminapicall";
+import { getQues } from "../admin/helper/adminapicall";
 import { isAutheticated } from "../auth/helper/index";
-import Question from "../core/Question"
-const App=({match})=> {
-   // const quizId = match.params.quizId;
-  const { user, token } = isAutheticated();
-  const [ans,setAns] = useState("");
-  const [ques,setQues] = useState([]);
-  const preload = (quizId) => {
-    getQuiz(quizId).then((data) => {
-            setQues(data.quest);
-    });
+import {Link} from "react-router-dom";
+import Question from "../core/Question";
+const App = ({ match }) => {
+	// const quizId = match.params.quizId;
+	const [score, setScore] = useState(0);
+	const [totalScore, setTotalScore] = useState(0);
+	// const [headers, setHeaders] = useState({
+	// 	name: "",
+	// 	course: "",
+	// 	description: "",
+	// });
+	const [ques, setQues] = useState([]);
+	const [quest, setQuest] = useState({
+		question: "",
+		option1: "",
+		option2: "",
+		option3: "",
+		option4: "",
+		answer: "",
+		marks: "",
+		currentIndex:0,
+	});
+	const [ans, setAns] = useState("");
+	const { question, option1, option2, option3, option4, answer, marks,currentIndex } = quest;
+	//const { name, course, description } = headers;
+	const [submit,setSubmit]=useState(false);
+	const nextQUestionHandler = (questionsArray) => {
+		const userAnswer = ans,
+			correctAnswer = answer;
+		setTotalScore(totalScore + Number(marks));
+		if (userAnswer === correctAnswer) {
+			setScore(score + Number(marks));
+		}
+		setAns("");
+		if(currentIndex<ques.length){
+			loadQuest(questionsArray[currentIndex],currentIndex);
+		}
+	};
+
+	const submitQuiz = (ques) => {
+		nextQUestionHandler(ques);
+		setSubmit(true);
+		
+	};
+
+	const submitted=()=>{
+		return(
+			<div className="container" style={{color:"white"}}>
+				<div className="row justify-content-center">
+					<div className="col-6 h2">
+						{`You scored ${score} out of ${totalScore}`}
+					</div>
+				</div>
+				<div className="row justify-content-center">
+					<div className="col-6 h2">
+						{"Percentage: "+ Math.floor((score/totalScore)*100) + "%"}
+					</div>
+				</div>
+				<div className="row justify-content-center">
+					<div className="col-6 h2">
+						{"Result: " + ((Math.floor((score/totalScore)*100)>60) ?"Pass":"Fail")}
+					</div>
+				</div>
+				<div className="row justify-content-center">
+					<div className="col-12 h4" style={{textAlign:"center"}}>
+					<Link to="/admin/dashboard"><button className="btn-success rounded">Go to Home</button></Link>
+					</div>
+				</div>
+			</div>
+		)
+	}
+
+	const loadQuest = async(id,index) => {
+		await getQues(id).then((data) =>
+			setQuest({
+				...quest,
+				question: data.question,
+				option1: data.option1,
+				option2: data.option2,
+				option3: data.option3,
+				option4: data.option4,
+				answer: data.answer,
+				marks: data.marks,
+				currentIndex:index+1
+			})
+		);
+	};
+
+	useEffect(() => {
+		const preload = async(quizId) => {
+			await getQuiz(quizId)
+				.then((data) => {
+					setQues(data.quest)
+					return data.quest;
+				})
+				.then((data) => {
+					loadQuest(data[0],0);
+				});
+		};
+		preload(match.params.quizId);
+	}, []);
+
+	const handleChangeq = () => (event) => {
+		setAns(event.target.value);
+	};
+
+	return (
+		<div className="container rounded mt10" style={{ color: "white" }}>
+			{ques.length!==0 && !submit && (
+				<div className="container-fluid">
+					<div className="container">
+						<br />
+						<div className="row">
+							<div
+								className="col-9 h2"
+								style={{ textAlign: "", marginBottom: "10px" }}>
+								{currentIndex + ".  " + question}
+							</div>
+							<div className="col-3 h4">
+							{"marks: " + marks }
+							</div>
+						</div>
+						<div className="row">
+							<div className="col-12">
+								<input
+									type="radio"
+									name="ans"
+									value={option1}
+									onChange={handleChangeq("ans")}
+									checked={ans && ans == option1}
+								/>
+								<label style={{ marginLeft: "10px" }}>{option1}</label>
+							</div>
+						</div>
+						<div className="row">
+							<div className="col-12">
+								<input
+									type="radio"
+									name="ans"
+									value={option2}
+									onChange={handleChangeq("ans")}
+									checked={ans && ans == option2}
+								/>
+								<label style={{ marginLeft: "10px" }}>{option2}</label>
+							</div>
+						</div>
+						<div className="row">
+							<div className="col-12">
+								<input
+									type="radio"
+									name="ans"
+									value={option3}
+									onChange={handleChangeq("ans")}
+									checked={ans && ans == option3}
+								/>
+								<label style={{ marginLeft: "10px" }}>{option3}</label>
+							</div>
+						</div>
+						<div className="row">
+							<div className="col-12">
+								<input
+									type="radio"
+									name="ans"
+									value={option4}
+									onChange={handleChangeq("ans")}
+									checked={ans && ans == option4}
+								/>
+								<label style={{ marginLeft: "10px" }}>{option4}</label>
+							</div>
+						</div>
+					</div>
+					<div className="row jsutify-content-center">
+						<div className="col-5"></div>
+						<div className="col-5">
+							<button
+								className="btn-success rounded"
+								style={{ display: currentIndex <= ques.length - 1? "" : "none" }}
+								onClick={() => nextQUestionHandler(ques)}>
+								Next Question
+							</button>
+
+							<button
+								className="btn-success"
+								style={{ display: (currentIndex > (ques.length-1)) ? "" : "none" }}
+								onClick={()=>submitQuiz(ques)}>
+								Submit
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
+			<br />
+			{ques.length!==0 && submit && submitted()}
+		</div>
+	);
 };
-
-useEffect(() => {
-    preload(match.params.quizId);
-}, []);
-
-//   const handleChangeq = () => (event) => {
-//   setAns(event.target.value);
-//   console.log(event.target.value==answer);}
-  return (
-    <div className="container bg-green">
-              <div className="container">
-                  {ques.map((q,key)=>(
-                      <Question quesId={q} sno={key}/>
-                  ))
-
-                  }
-                </div>
-            
-              </div>
-    );
-}
 
 export default App;
