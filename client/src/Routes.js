@@ -12,7 +12,7 @@ import ManageCourses from "./admin/ManageCourses";
 import AddQuiz from "./admin/AddQuiz";
 import ManageQuizs from "./admin/ManageQuiz";
 import AttemptQuiz from "./user/AttemptQuiz";
-// import UpdateQuiz from "./admin/UpdateQuiz";
+import QuizResults from "./admin/QuizResults";
 
 const Routes = () => {
 	return (
@@ -33,11 +33,11 @@ const Routes = () => {
         <AdminRoute path="/admin/create/quiz" exact component={AddQuiz} />
 
         <AdminRoute path="/admin/quizs" exact component={ManageQuizs} />
-        {/* <AdminRoute
-          path="/admin/course/update/:courseId"
+         <PrivateRoute
+          path="/quiz/results/:quizId"
           exact
-          component={UpdateCourse}
-        /> */}
+          component={QuizResults}
+        />
         {/* <AdminRoute
           path="/admin/quiz/update/:quizId"
           exact

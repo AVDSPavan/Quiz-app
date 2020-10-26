@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { getQuiz } from "../admin/helper/adminapicall";
-import { getQues } from "../admin/helper/adminapicall";
+import { getQuiz, getQues, addResult } from "../admin/helper/adminapicall";
 import { isAutheticated } from "../auth/helper/index";
-import {Link} from "react-router-dom";
-import Question from "../core/Question";
+import { Link } from "react-router-dom";
+
 const App = ({ match }) => {
-	// const quizId = match.params.quizId;
+	const { user, token } = isAutheticated();
 	const [score, setScore] = useState(0);
 	const [totalScore, setTotalScore] = useState(0);
 	// const [headers, setHeaders] = useState({
@@ -22,12 +21,21 @@ const App = ({ match }) => {
 		option4: "",
 		answer: "",
 		marks: "",
-		currentIndex:0,
+		currentIndex: 0,
 	});
 	const [ans, setAns] = useState("");
-	const { question, option1, option2, option3, option4, answer, marks,currentIndex } = quest;
+	const {
+		question,
+		option1,
+		option2,
+		option3,
+		option4,
+		answer,
+		marks,
+		currentIndex,
+	} = quest;
 	//const { name, course, description } = headers;
-	const [submit,setSubmit]=useState(false);
+	const [submit, setSubmit] = useState(false);
 	const nextQUestionHandler = (questionsArray) => {
 		const userAnswer = ans,
 			correctAnswer = answer;
@@ -36,20 +44,43 @@ const App = ({ match }) => {
 			setScore(score + Number(marks));
 		}
 		setAns("");
-		if(currentIndex<ques.length){
-			loadQuest(questionsArray[currentIndex],currentIndex);
+		if (currentIndex < ques.length) {
+			loadQuest(questionsArray[currentIndex], currentIndex);
 		}
+	};
+
+	const saveResult = async (
+		qid,
+		uid,
+		email,
+		token,
+		score,
+		totalScore,
+		studname
+	) => {
+		await addResult(qid, uid, token, {
+			email: email,
+			name: studname,
+			quiz: qid,
+			percent: Math.floor((score / totalScore) * 100),
+			res: Math.floor((score / totalScore) * 100) >= 50 ? "Pass" : "Fail",
+		})
+			.then((data) => {
+				if (data.error) {
+					console.log(data.error);
+				}
+			})
+			.catch((err) => console.log(err));
 	};
 
 	const submitQuiz = (ques) => {
 		nextQUestionHandler(ques);
 		setSubmit(true);
-		
 	};
 
-	const submitted=()=>{
-		return(
-			<div className="container" style={{color:"white"}}>
+	const submitted = () => {
+		return (
+			<div className="container" style={{ color: "white" }}>
 				<div className="row justify-content-center">
 					<div className="col-6 h2">
 						{`You scored ${score} out of ${totalScore}`}
@@ -57,24 +88,27 @@ const App = ({ match }) => {
 				</div>
 				<div className="row justify-content-center">
 					<div className="col-6 h2">
-						{"Percentage: "+ Math.floor((score/totalScore)*100) + "%"}
+						{"Percentage: " + Math.floor((score / totalScore) * 100) + "%"}
 					</div>
 				</div>
 				<div className="row justify-content-center">
 					<div className="col-6 h2">
-						{"Result: " + ((Math.floor((score/totalScore)*100)>60) ?"Pass":"Fail")}
+						{"Result: " +
+							(Math.floor((score / totalScore) * 100) >= 50 ? "Pass" : "Fail")}
 					</div>
 				</div>
 				<div className="row justify-content-center">
-					<div className="col-12 h4" style={{textAlign:"center"}}>
-					<Link to="/admin/dashboard"><button className="btn-success rounded">Go to Home</button></Link>
+					<div className="col-12 h4" style={{ textAlign: "center" }}>
+						<Link to="/">
+							<button className="btn-success rounded">Go to Home</button>
+						</Link>
 					</div>
 				</div>
 			</div>
-		)
-	}
+		);
+	};
 
-	const loadQuest = async(id,index) => {
+	const loadQuest = async (id, index) => {
 		await getQues(id).then((data) =>
 			setQuest({
 				...quest,
@@ -85,20 +119,20 @@ const App = ({ match }) => {
 				option4: data.option4,
 				answer: data.answer,
 				marks: data.marks,
-				currentIndex:index+1
+				currentIndex: index + 1,
 			})
 		);
 	};
 
 	useEffect(() => {
-		const preload = async(quizId) => {
+		const preload = async (quizId) => {
 			await getQuiz(quizId)
 				.then((data) => {
-					setQues(data.quest)
+					setQues(data.quest);
 					return data.quest;
 				})
 				.then((data) => {
-					loadQuest(data[0],0);
+					loadQuest(data[0], 0);
 				});
 		};
 		preload(match.params.quizId);
@@ -110,7 +144,7 @@ const App = ({ match }) => {
 
 	return (
 		<div className="container rounded mt10" style={{ color: "white" }}>
-			{ques.length!==0 && !submit && (
+			{ques.length !== 0 && !submit && (
 				<div className="container-fluid">
 					<div className="container">
 						<br />
@@ -120,9 +154,7 @@ const App = ({ match }) => {
 								style={{ textAlign: "", marginBottom: "10px" }}>
 								{currentIndex + ".  " + question}
 							</div>
-							<div className="col-3 h4">
-							{"marks: " + marks }
-							</div>
+							<div className="col-3 h4">{"marks: " + marks}</div>
 						</div>
 						<div className="row">
 							<div className="col-12">
@@ -178,15 +210,19 @@ const App = ({ match }) => {
 						<div className="col-5">
 							<button
 								className="btn-success rounded"
-								style={{ display: currentIndex <= ques.length - 1? "" : "none" }}
+								style={{
+									display: currentIndex <= ques.length - 1 ? "" : "none",
+								}}
 								onClick={() => nextQUestionHandler(ques)}>
 								Next Question
 							</button>
 
 							<button
 								className="btn-success"
-								style={{ display: (currentIndex > (ques.length-1)) ? "" : "none" }}
-								onClick={()=>submitQuiz(ques)}>
+								style={{
+									display: currentIndex > ques.length - 1 ? "" : "none",
+								}}
+								onClick={() => submitQuiz(ques)}>
 								Submit
 							</button>
 						</div>
@@ -194,7 +230,20 @@ const App = ({ match }) => {
 				</div>
 			)}
 			<br />
-			{ques.length!==0 && submit && submitted()}
+			<div>
+				{submit &&
+					saveResult(
+						match.params.quizId,
+						user._id,
+						user.email,
+						token,
+						score,
+						totalScore,
+						user.name
+					) &&
+					false}
+			</div>
+			{ques.length !== 0 && submit && submitted()}
 		</div>
 	);
 };

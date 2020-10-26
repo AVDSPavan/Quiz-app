@@ -21,12 +21,9 @@ const quizSchema = new mongoose.Schema(
 			maxlength: 2000,
 		},
 		results: {
-			type: [{type:ObjectId,ref:"User"}]
+			type: Array,
+			default:[] 
 		},
-		// result: {
-		// 	type: Number,
-		// 	default: 0,
-		// },
 		course: {
 			type: String,
 			required: true

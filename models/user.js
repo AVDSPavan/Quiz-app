@@ -25,8 +25,7 @@ var userSchema = new mongoose.Schema(
 			type: Number,
 			default: 0,
 		},
-		attempted: [{ type: ObjectId, ref: "AttemptedQuizes" }],
-		created:[{type:ObjectId,ref:"Quiz"}],
+		attempted: [{ type: ObjectId, ref: "Quiz" }],
 	},
 	{ timestamps: true }
 );

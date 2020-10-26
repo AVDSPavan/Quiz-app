@@ -6,12 +6,11 @@ const {
   createquiz,
   getquiz,
   getAllquiz,
-  //updatequiz,
+  updatequiz,
   removequiz
 } = require("../controllers/quiz");
 const { isSignedIn, isAdmin, isAuthenticated } = require("../controllers/auth");
 const { getUserById } = require("../controllers/user");
-
 //params
 router.param("userId", getUserById);
 router.param("quizId", getquizById);
@@ -27,18 +26,18 @@ router.post(
   createquiz
 );
 
+
 //read
 router.get("/quiz/:quizId", getquiz);
 router.get("/quizs", getAllquiz);
 
 //update
-// router.put(
-//   "/quiz/:quizId/:userId",
-//   isSignedIn,
-//   isAuthenticated,
-//   isAdmin,
-//   updatequiz
-// );
+router.put(
+  "/quiz/:quizId/:userId",
+  isSignedIn,
+  isAuthenticated,
+  updatequiz
+);
 
 //delete
 

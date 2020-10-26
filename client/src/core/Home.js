@@ -1,29 +1,49 @@
 import React, { useState, useEffect } from "react";
 import "../styles.css";
-import { API } from "../backend";
 import Base from "./Base";
 import { Link } from "react-router-dom";
-//import Card from "./Card";
-import { getCourse } from "../admin/helper/adminapicall";
+import { getCourse} from "../admin/helper/adminapicall";
 import { getQuizs } from "./helper/coreapicalls";
+import { isAutheticated } from "../auth/helper";
+import { API } from "../backend";
 
 export default function Home() {
+	const {user,token} = isAutheticated();
 	const [quizs, setQuizs] = useState([]);
+	const [attempted,setAttempted] = useState([]);
 	const [error, setError] = useState(false);
-
-	const loadAllQuizs = async () => {
-		await getQuizs().then((data) => {
-			if (data.error) {
-				setError(data.error);
-				console.log(data.error);
-			} else {
-				setQuizs(data);
+	
+	const getAttemptedlist =async(id,token) =>{
+		return await fetch(`${API}/user/${id}`,{
+			method:"GET",
+			headers:{
+				Accept: "application/json",
+     			"Content-Type": "application/json",
+     			Authorization: `Bearer ${token}`
 			}
-		});
+		}).then(data =>{
+			return data.json();
+		})
+	}
+
+
+	const loadAllQuizs = async (user,token) => {
+		await getAttemptedlist(user._id,token).then(async(res)=>{
+			setAttempted(res.attempted);
+			await getQuizs().then((data) => {
+				if (data.error) {
+					setError(data.error);
+					console.log(data.error);
+				} else {
+					setQuizs(data);
+				}
+			})
+		})
+		
 	};
 
 	useEffect(() => {
-		loadAllQuizs();
+		loadAllQuizs(user,token);
 	}, []);
 
 	return (
@@ -40,15 +60,26 @@ export default function Home() {
 								</tr>
 							</thead>
 							<tbody style={{ textAlign: "center" }}>
-								{quizs.map((quiz, index) => {
+								{quizs && quizs.map((quiz, index) => {
 									return (
 										<tr key={index}>
 											<td>{quiz.name}</td>
 											<td>{quiz.course}</td>
 											<td>
-												<Link to={`/quiz/attempt/${quiz._id}`}>
+												{!isAutheticated().user && (<Link to={`/quiz/attempt/${quiz._id}`}>
 													<span className="btn btn-info">Attempt</span>
-												</Link>
+												</Link>)}
+												{/* {attempted && console.log("attempted: "+attempted.includes(quiz._id))} */}
+												{isAutheticated().user && isAutheticated().user.role === 0 && (attempted && !attempted.includes(quiz._id))  && (
+													<Link to={`/quiz/attempt/${quiz._id}`}>
+														<span className="btn btn-info">Attempt</span>
+													</Link>
+												)}
+												{isAutheticated().user && (isAutheticated().user.role === 1 || (attempted && attempted.includes(quiz._id))) && (
+													<Link to={`/quiz/results/${quiz._id}`}>
+														<span className="btn btn-info">Results</span>
+													</Link>
+												)}
 											</td>
 										</tr>
 									);

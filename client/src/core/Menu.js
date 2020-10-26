@@ -12,27 +12,12 @@ const currentTab = (history, path) => {
 
 const Menu = ({ history }) => (
   <div style={{fontSize:"23px"}}>
-    {/* <nav className="navbar navbar-expand-md fixed-top bg-dark">
-      <div className="container-fluid">
-        <button className="navbar-toggler bg-white" type="button" data-toggle ="collapse" data-target="#mainNav">
-        <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse bg-dark" id="mainNav"> */}
         <ul className="nav nav-tabs fixed-top bg-dark">
           <li className="nav-item">
         <Link style={currentTab(history, "/")} className="nav-link" to="/">
           Home
         </Link>
       </li>
-      {/* <li className="nav-item">
-        <Link
-          style={currentTab(history, "/cart")}
-          className="nav-link"
-          to="/cart"
-        >
-          Cart
-        </Link>
-      </li> */}
       {isAutheticated() && isAutheticated().user.role === 0 && (
         <li className="nav-item">
           <Link

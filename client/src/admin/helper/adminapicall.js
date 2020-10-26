@@ -17,7 +17,7 @@ export const createCourse = (userId, token, category) => {
     .catch(err => console.log(err));
 };
 
-//get all categories
+//get all courses
 export const getCourses = async () => {
   return await fetch(`${API}/courses`, {
     method: "GET"
@@ -71,7 +71,6 @@ export const createQuestion = (userId,token,body) =>{
 
 
 export const createaQuiz = (userId,token,body) =>{
-  console.log(body);
   return fetch(`${API}/quiz/create/${userId}`,{
     method:"POST",
     headers:{
@@ -114,3 +113,21 @@ export const getQues = quesId => {
     })
     .catch(err => console.log(err));
 };
+
+
+
+export const addResult = (quizId,userId,token,body) =>{
+  return fetch(`${API}/quiz/${quizId}/${userId}`,{
+    method:"PUT",
+    headers:{
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`  
+    },
+    body: JSON.stringify(body)
+  })
+  .then(response => {
+    return response.json();
+  })
+  .catch(err => console.log(err));
+}
