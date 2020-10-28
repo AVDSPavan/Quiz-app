@@ -1,5 +1,5 @@
 const Quiz = require("../models/quiz");
-const User = require("../models/user");
+const Question = require("../models/question");
 
 exports.getquizById = (req, res, next, id) => {
 	Quiz.findById(id).exec((err, qui) => {
@@ -12,22 +12,6 @@ exports.getquizById = (req, res, next, id) => {
 		next();
 	});
 };
-
-// exports.getAttemptedQuizById = (req, res,next,id) => {
-// 	AttemptedQuizes.findById(id).exec((err, result) => {
-// 		if (err) {
-// 			return res.status(400).json({
-// 				error: "Attemptedquiz not found in DB",
-// 			});
-// 		}
-// 		req.attemptedquizresult = result
-// 		next();
-// 	});
-// };
-
-// exports.getAttemptedResult = (req, res) => {
-// 	return res.json(req.attemptedquizresult);
-// };
 
 exports.createquiz = (req, res) => {
 	// console.log("Quiz Came");
@@ -81,7 +65,6 @@ exports.getAllquiz = (req, res) => {
 		return res.json(quizs);
 	});
 };
-
 
 exports.removequiz = (req, res) => {
 	const quiz = req.quiz;

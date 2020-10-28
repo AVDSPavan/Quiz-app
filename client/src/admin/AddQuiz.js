@@ -41,12 +41,7 @@ const AddQuiz = () => {
 		description,
 		course,
 		courses,
-		quest,
-		createdby,
-		loading,
-		error,
-		createdProduct,
-		getaRedirect,
+		createdProduct
 	} = values;
 
 	const preload = () => {
@@ -83,6 +78,7 @@ const AddQuiz = () => {
 					answer: "",
 					marks: "",
 				});
+				window.alert("Question added to the quiz...")
 			}
 		});
 	};
@@ -107,6 +103,7 @@ const AddQuiz = () => {
 						if (data.error) {
 							setValues({ ...values, error: data.error })
 						} else {
+							window.alert("Your New Quiz is Created...")
 							setValues({...values,
 							name: "",
 							description: "",
@@ -155,7 +152,7 @@ const AddQuiz = () => {
 					onChange={handleChange("description")}
 					name="description"
 					className="form-control"
-					placeholder="Description"
+					placeholder="Description(Optional)"
 					value={description}
 				/>
 			</div>
@@ -167,13 +164,14 @@ const AddQuiz = () => {
 					<option>Select Course</option>
 					{courses &&
 						courses.map((cours, index) => {
-							if (cours.count == 0) {
+							if (cours.count === 0) {
 								return (
 									<option key={index} value={cours._id}>
 										{cours.name}
 									</option>
 								);
 							}
+							return ""
 						})}
 				</select>
 			</div>

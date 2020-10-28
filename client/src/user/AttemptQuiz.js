@@ -163,7 +163,7 @@ const App = ({ match }) => {
 									name="ans"
 									value={option1}
 									onChange={handleChangeq("ans")}
-									checked={ans && ans == option1}
+									checked={ans && ans === option1}
 								/>
 								<label style={{ marginLeft: "10px" }}>{option1}</label>
 							</div>
@@ -175,7 +175,7 @@ const App = ({ match }) => {
 									name="ans"
 									value={option2}
 									onChange={handleChangeq("ans")}
-									checked={ans && ans == option2}
+									checked={ans && ans === option2}
 								/>
 								<label style={{ marginLeft: "10px" }}>{option2}</label>
 							</div>
@@ -187,7 +187,7 @@ const App = ({ match }) => {
 									name="ans"
 									value={option3}
 									onChange={handleChangeq("ans")}
-									checked={ans && ans == option3}
+									checked={ans && ans === option3}
 								/>
 								<label style={{ marginLeft: "10px" }}>{option3}</label>
 							</div>
@@ -199,7 +199,7 @@ const App = ({ match }) => {
 									name="ans"
 									value={option4}
 									onChange={handleChangeq("ans")}
-									checked={ans && ans == option4}
+									checked={ans && ans === option4}
 								/>
 								<label style={{ marginLeft: "10px" }}>{option4}</label>
 							</div>

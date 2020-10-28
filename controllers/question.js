@@ -41,23 +41,8 @@ exports.getAllquestion = (req, res) => {
   });
 };
 
-// exports.updatequestion = (req, res) => {
-//   const question = req.question;
-//   question.name = req.body.name;
-//   question.option1
-
-//   question.save((err, updatedquestion) => {
-//     if (err) {
-//       return res.status(400).json({
-//         error: "Failed to update question"
-//       });
-//     }
-//     res.json(updatedquestion);
-//   });
-// };
-
-exports.removequestion = (req, res) => {
-  const question = req.question;
+exports.removequestion = (ques) => {
+  const question = ques;
   question.remove((err, question) => {
     if (err) {
       return res.status(400).json({

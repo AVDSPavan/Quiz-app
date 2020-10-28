@@ -1,10 +1,9 @@
 import React from "react";
 import Base from "../core/Base";
 import { isAutheticated } from "../auth/helper/index";
-import { Link } from "react-router-dom";
 
 const UserDashBoard = () => {
-  const { user: { name, email ,role}} = isAutheticated();
+  const { user: { name, email}} = isAutheticated();
 
 //   const UserLeftSide = () => {
 //     return (
