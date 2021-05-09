@@ -7,6 +7,18 @@ It is a Quiz-app web application developed using React js, Node js, MongoDb and 
 https://quiz-app9.herokuapp.com/
 
 
+### Teacher signin:
+
+Email : teacher@gmail.com
+
+Password: 123456
+
+### Student signin:
+
+Email : student@gmail.com
+
+Password: 123456
+
 ## Features:
 1. HomePage
 2. User Dashboard
