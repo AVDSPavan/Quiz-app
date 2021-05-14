@@ -4,6 +4,8 @@ It is a Quiz-app web application developed using React js, Node js, MongoDb and 
 
 ## Note :
 
+Kindly check both roles in the application with signin details given below. Create a quiz using teacher and attempt by logging in as student.
+
 https://quiz-app9.herokuapp.com/
 
 
